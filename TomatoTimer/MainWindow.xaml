@@ -13,5 +13,8 @@
     Closing="MainWindow_OnClosing"
     Icon="/tomato.ico"
     mc:Ignorable="d">
+    <Window.TaskbarItemInfo>
+        <TaskbarItemInfo />
+    </Window.TaskbarItemInfo>
     <local:TimerView x:Name="TimerView" />
 </Window>

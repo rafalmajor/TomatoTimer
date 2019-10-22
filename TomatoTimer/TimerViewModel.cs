@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Media;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Shell;
 
 using Prism.Commands;
 using Prism.Mvvm;
@@ -129,6 +133,8 @@ namespace TomatoTimer
 
         public ICommand ResetCommand => this.resetCommand ??= new DelegateCommand(() => { });
 
+        public TaskbarItemInfo TaskbarItemInfo { get; set; }
+
         public void SaveWorkDone()
         {
             var workDone = new WorkDone
@@ -143,23 +149,96 @@ namespace TomatoTimer
 
         private void TimerOnEnd(object sender, EventArgs e)
         {
+            this.RaisePropertyChanged(nameof(this.CurrentTime));
             if (!this.breakPeriod)
             {
                 this.Tomato++;
-                foreach (int n in new[] { 1, 2 })
-                    this.soundPlayerBravo.Play();
+                Task.Run(this.TomatoComplited);
                 this.SaveWorkDone();
+                
             }
             else
             {
-                foreach (int n in new[] { 1, 2, 3 })
-                    this.soundPlayerAlarm.Play();
+                Task.Run(this.BreakComlited);
             }
+        }
+
+        private void BreakComlited()
+        {
+            foreach (int n in new[] { 1, 2, 3 })
+                this.soundPlayerAlarm.Play();
+            this.BreakTaskBar();
+        }
+
+        private void TomatoComplited()
+        {
+            this.soundPlayerBravo.Play();
+            this.TomatoTaskBar();
+        }
+
+        private void BreakTaskBar()
+        {
+            Application.Current.Dispatcher?.Invoke(
+                () =>
+                {
+                    this.TaskbarItemInfo.ProgressValue = 1;
+                    this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Error;
+                    Thread.Sleep(200);
+                    this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Normal;
+                    Thread.Sleep(200);
+                    this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Error;
+                    Thread.Sleep(200);
+                    this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Normal;
+                    Thread.Sleep(200);
+                    this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Error;
+                    Thread.Sleep(200);
+                    this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Normal;
+                    Thread.Sleep(200);
+                    this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Error;
+                    Thread.Sleep(200);
+                    this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Normal;
+                });
+        }
+
+        private void TomatoTaskBar()
+        {
+            Application.Current.Dispatcher?.Invoke(
+                () =>
+                {
+                    this.TaskbarItemInfo.ProgressValue = 1;
+                    this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Error;
+                    Thread.Sleep(200);
+                    this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Normal;
+                    Thread.Sleep(200);
+                    this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Error;
+                    Thread.Sleep(200);
+                    this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Normal;
+                    Thread.Sleep(200);
+                    this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Error;
+                    Thread.Sleep(200);
+                    this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Normal;
+                    Thread.Sleep(200);
+                    this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Error;
+                    Thread.Sleep(200);
+                    this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Normal;
+                });
+        }
+
+        private void ProgressTaskBar(double progress)
+        {
+            Application.Current.Dispatcher?.Invoke(
+                () =>
+                {
+                    this.TaskbarItemInfo.ProgressValue = progress;
+                    this.TaskbarItemInfo.ProgressState = TaskbarItemProgressState.Normal;
+                });
         }
 
         private void TimerOnUpdate(object sender, EventArgs e)
         {
             this.RaisePropertyChanged(nameof(this.CurrentTime));
+            this.ProgressTaskBar(this.timer.Progress);
+            
         }
     }
 }

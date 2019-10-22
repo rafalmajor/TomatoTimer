@@ -1,5 +1,10 @@
 ﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Timers;
+using System.Windows.Documents;
+
+using Timer = System.Timers.Timer;
 
 namespace TomatoTimer
 {
@@ -8,6 +13,8 @@ namespace TomatoTimer
         private readonly Timer timer = new Timer();
 
         private TimeSpan timeSpan;
+
+        private TimeSpan startTimeSpan;
 
         public TimerModel()
         {
@@ -21,9 +28,13 @@ namespace TomatoTimer
 
         public string CurrentTime => this.timeSpan.ToString(@"mm\:ss");
 
+        public double Progress => this.startTimeSpan == TimeSpan.Zero ? 0 : 1 - this.timeSpan.TotalSeconds / this.startTimeSpan.TotalSeconds;
+
         public void Start(int minutes)
         {
-            this.timeSpan = TimeSpan.FromMinutes(Convert.ToInt32(minutes));
+            this.startTimeSpan = TimeSpan.FromSeconds(Convert.ToInt32(minutes));
+            this.timeSpan = this.startTimeSpan;
+            this.Update?.Invoke(this, EventArgs.Empty);
             this.timer.Start();
         }
 
@@ -42,13 +53,19 @@ namespace TomatoTimer
 
         private void TimerOnElapsed(object sender, ElapsedEventArgs e)
         {
-            this.timeSpan = this.timeSpan.Subtract(TimeSpan.FromSeconds(1));
+            this.timeSpan -= TimeSpan.FromSeconds(1);
             this.Update?.Invoke(this, EventArgs.Empty);
             if (this.timeSpan == TimeSpan.Zero)
             {
-                this.timer.Stop();
-                this.End?.Invoke(this, EventArgs.Empty);
+                Task.Run(this.Ending);
             }
+        }
+
+        private void Ending()
+        {
+            Thread.Sleep(10);
+            this.timer.Stop();
+            this.End?.Invoke(this, EventArgs.Empty);
         }
     }
 }

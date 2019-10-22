@@ -1,5 +1,8 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
+using System.Threading;
 using System.Windows;
+using System.Windows.Shell;
 
 namespace TomatoTimer
 {
@@ -9,7 +12,12 @@ namespace TomatoTimer
         public MainWindow()
         {
             this.InitializeComponent();
+            if (this.TimerView.DataContext is TimerViewModel timerViewModel)
+            {
+                timerViewModel.TaskbarItemInfo = this.TaskbarItemInfo;
+            }
         }
+
 
         private void MainWindow_OnClosing(object sender, CancelEventArgs e)
         {
