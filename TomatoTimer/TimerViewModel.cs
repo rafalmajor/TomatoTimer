@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Media;
 using System.Windows.Input;
 
 using Prism.Commands;
@@ -11,6 +12,10 @@ namespace TomatoTimer
         private const int TomatoTime = 25;
 
         private const int BreakTime = 5;
+
+        private readonly SoundPlayer soundPlayerAlarm = new SoundPlayer("Various-04.wav");
+
+        private readonly SoundPlayer soundPlayerBravo = new SoundPlayer("Various-01.wav");
 
         private readonly TimerModel timer = new TimerModel();
 
@@ -26,17 +31,17 @@ namespace TomatoTimer
 
         private ICommand lostFocusCommand;
 
+        private ICommand resetCommand;
+
         private ICommand startCommand;
 
         private bool startStop;
 
         private ICommand stopCommand;
 
+        private readonly Storage storage;
+
         private int tomato;
-
-        private ICommand resetCommand;
-
-        private Storage storage;
 
         public TimerViewModel()
         {
@@ -108,32 +113,25 @@ namespace TomatoTimer
                 this.RaisePropertyChanged(nameof(this.StartStopLabel));
             });
 
-        public ICommand InterruptionCommand => this.interruptionCommand ??= new DelegateCommand(() =>
-        {
-            this.Interruption++;
-            this.SaveWorkDone();
-        });
-
-        public ICommand LostFocusCommand => this.lostFocusCommand ??= new DelegateCommand(() =>
-        {
-            this.LostFocus++;
-            this.SaveWorkDone();
-        });
-
-        public ICommand ResetCommand => this.resetCommand ??= new DelegateCommand(() => {});
-
-        private void TimerOnEnd(object sender, EventArgs e)
-        {
-            if (!this.breakPeriod)
+        public ICommand InterruptionCommand => this.interruptionCommand ??= new DelegateCommand(
+            () =>
             {
-                this.Tomato++;
+                this.Interruption++;
                 this.SaveWorkDone();
-            }
-        }
+            });
+
+        public ICommand LostFocusCommand => this.lostFocusCommand ??= new DelegateCommand(
+            () =>
+            {
+                this.LostFocus++;
+                this.SaveWorkDone();
+            });
+
+        public ICommand ResetCommand => this.resetCommand ??= new DelegateCommand(() => { });
 
         public void SaveWorkDone()
         {
-            var workDone = new WorkDone()
+            var workDone = new WorkDone
                            {
                                Day = DateTime.Today,
                                Tomato = this.Tomato,
@@ -141,6 +139,22 @@ namespace TomatoTimer
                                LostFocus = this.LostFocus
                            };
             this.storage.Store(workDone);
+        }
+
+        private void TimerOnEnd(object sender, EventArgs e)
+        {
+            if (!this.breakPeriod)
+            {
+                this.Tomato++;
+                foreach (int n in new[] { 1, 2 })
+                    this.soundPlayerBravo.Play();
+                this.SaveWorkDone();
+            }
+            else
+            {
+                foreach (int n in new[] { 1, 2, 3 })
+                    this.soundPlayerAlarm.Play();
+            }
         }
 
         private void TimerOnUpdate(object sender, EventArgs e)

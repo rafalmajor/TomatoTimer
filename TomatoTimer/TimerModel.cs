@@ -29,7 +29,10 @@ namespace TomatoTimer
 
         public void Continue()
         {
-            this.timer.Start();
+            if (this.timeSpan != TimeSpan.Zero)
+            {
+                this.timer.Start();
+            }
         }
 
         public void Stop()

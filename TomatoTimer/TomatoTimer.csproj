@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <None Remove="tomato.ico" />
+    <None Remove="Various-01.wav" />
+    <None Remove="Various-04.wav" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,6 +18,12 @@
 
   <ItemGroup>
     <Content Include="tomato.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Various-01.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Various-04.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
