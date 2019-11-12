@@ -32,7 +32,7 @@ namespace TomatoTimer
 
         public void Start(int minutes)
         {
-            this.startTimeSpan = TimeSpan.FromSeconds(Convert.ToInt32(minutes));
+            this.startTimeSpan = TimeSpan.FromMinutes(Convert.ToInt32(minutes));
             this.timeSpan = this.startTimeSpan;
             this.Update?.Invoke(this, EventArgs.Empty);
             this.timer.Start();
