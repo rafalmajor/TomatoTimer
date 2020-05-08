@@ -15,5 +15,12 @@
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo />
     </Window.TaskbarItemInfo>
-    <local:TimerView x:Name="TimerView" />
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="4*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <local:ClockView Grid.Row="0" VerticalContentAlignment="Center" />
+        <local:BottomMenuView Grid.Row="1" />
+    </Grid>
 </Window>

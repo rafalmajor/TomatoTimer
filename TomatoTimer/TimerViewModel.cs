@@ -44,8 +44,6 @@ namespace TomatoTimer
 
         private ICommand stopCommand;
 
-        private readonly Storage storage;
-
         private int tomato;
 
         public TimerViewModel()
@@ -53,12 +51,6 @@ namespace TomatoTimer
             this.timer.Update += this.TimerOnUpdate;
             this.timer.End += this.TimerOnEnd;
 
-            this.storage = new Storage();
-
-            var workDone = this.storage.GetWorkDone(DateTime.Today);
-            this.Tomato = workDone.Tomato;
-            this.Interruption = workDone.Interruption;
-            this.LostFocus = workDone.LostFocus;
         }
 
         public string CurrentTime => this.timer.CurrentTime;
@@ -123,31 +115,18 @@ namespace TomatoTimer
             () =>
             {
                 this.Interruption++;
-                this.SaveWorkDone();
             });
 
         public ICommand LostFocusCommand => this.lostFocusCommand ??= new DelegateCommand(
             () =>
             {
                 this.LostFocus++;
-                this.SaveWorkDone();
             });
 
         public ICommand ResetCommand => this.resetCommand ??= new DelegateCommand(() => { });
 
         public TaskbarItemInfo TaskbarItemInfo { get; set; }
 
-        public void SaveWorkDone()
-        {
-            var workDone = new WorkDone
-                           {
-                               Day = DateTime.Today,
-                               Tomato = this.Tomato,
-                               Interruption = this.Interruption,
-                               LostFocus = this.LostFocus
-                           };
-            this.storage.Store(workDone);
-        }
 
         private void TimerOnEnd(object sender, EventArgs e)
         {
@@ -156,8 +135,6 @@ namespace TomatoTimer
             {
                 this.Tomato++;
                 Task.Run(this.TomatoComplited);
-                this.SaveWorkDone();
-                
             }
             else
             {

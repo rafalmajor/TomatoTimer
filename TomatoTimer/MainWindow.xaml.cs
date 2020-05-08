@@ -12,10 +12,10 @@ namespace TomatoTimer
         public MainWindow()
         {
             this.InitializeComponent();
-            if (this.TimerView.DataContext is TimerViewModel timerViewModel)
-            {
-                timerViewModel.TaskbarItemInfo = this.TaskbarItemInfo;
-            }
+            //if (this.TimerView.DataContext is TimerViewModel timerViewModel)
+            //{
+            //    timerViewModel.TaskbarItemInfo = this.TaskbarItemInfo;
+            //}
         }
 
     }
