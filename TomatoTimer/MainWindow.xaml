@@ -10,7 +10,6 @@
     Width="850"
     Height="500"
     prism:ViewModelLocator.AutoWireViewModel="True"
-    Closing="MainWindow_OnClosing"
     Icon="/tomato.ico"
     mc:Ignorable="d">
     <Window.TaskbarItemInfo>

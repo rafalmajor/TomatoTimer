@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Media;
 using System.Threading;
 using System.Threading.Tasks;
@@ -85,6 +86,7 @@ namespace TomatoTimer
         public ICommand StartCommand => this.startCommand ??= new DelegateCommand(
             () =>
             {
+                Debugger.Break();
                 this.breakPeriod = false;
                 this.timer.Start(TomatoTime);
                 this.startStop = false;

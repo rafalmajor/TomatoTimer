@@ -6,12 +6,11 @@
     xmlns:local="clr-namespace:TomatoTimer"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="http://prismlibrary.com/"
-    d:DataContext="{d:DesignInstance Type=local:TimerViewModel}"
     Width="800"
     Height="450"
+    d:DataContext="{d:DesignInstance Type=local:TimerViewModel}"
     prism:ViewModelLocator.AutoWireViewModel="True"
-    mc:Ignorable="d"
-    >
+    mc:Ignorable="d">
     <UserControl.Resources>
         <Style TargetType="Button">
             <Setter Property="Width" Value="150" />
@@ -34,8 +33,8 @@
             VerticalAlignment="Center"
             Orientation="Vertical">
             <TextBlock
-                HorizontalAlignment="Center"
                 Width="400"
+                HorizontalAlignment="Center"
                 FontSize="160"
                 FontWeight="SemiBold"
                 Text="{Binding CurrentTime, UpdateSourceTrigger=PropertyChanged}" />

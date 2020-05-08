@@ -18,13 +18,5 @@ namespace TomatoTimer
             }
         }
 
-
-        private void MainWindow_OnClosing(object sender, CancelEventArgs e)
-        {
-            if (this.TimerView.DataContext is TimerViewModel timerViewModel)
-            {
-                timerViewModel.SaveWorkDone();
-            }
-        }
     }
 }
