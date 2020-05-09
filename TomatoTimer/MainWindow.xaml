@@ -17,10 +17,12 @@
     </Window.TaskbarItemInfo>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="4*" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="6*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="2*" />
         </Grid.RowDefinitions>
-        <local:ClockView Grid.Row="0" VerticalContentAlignment="Center" />
-        <local:BottomMenuView Grid.Row="1" />
+        <local:ClockView Grid.Row="1" />
+        <local:BottomMenuView Grid.Row="3" />
     </Grid>
 </Window>

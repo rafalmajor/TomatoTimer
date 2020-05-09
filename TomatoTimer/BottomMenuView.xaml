@@ -5,8 +5,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:TomatoTimer"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mvvm="http://prismlibrary.com/"
+    d:DataContext="{d:DesignInstance local:BottomMenuViewModel}"
     d:DesignHeight="100"
     d:DesignWidth="800"
+    mvvm:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
     <UserControl.Resources>
         <Style TargetType="Button">
@@ -14,28 +17,31 @@
             <Setter Property="Height" Value="50" />
             <Setter Property="FontSize" Value="20" />
             <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Margin" Value="10" />
         </Style>
     </UserControl.Resources>
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Button
-            Grid.Column="0"
-            Command="{Binding StartCommand}"
-            Content="Start"
-            DockPanel.Dock="Left" />
-        <Button
-            Grid.Column="1"
-            Command="{Binding StopCommand}"
-            Content="?"
-            DockPanel.Dock="Bottom" />
-        <Button
-            Grid.Column="2"
-            Command="{Binding BreakCommand}"
-            Content="Break"
-            DockPanel.Dock="Right" />
-    </Grid>
+    <Viewbox
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch"
+        Stretch="Uniform">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Button
+                Grid.Column="0"
+                Command="{Binding StartCommand}"
+                Content="Start" />
+            <Button
+                Grid.Column="1"
+                Command="{Binding StopCommand}"
+                Content="Stop" />
+            <Button
+                Grid.Column="2"
+                Command="{Binding BreakCommand}"
+                Content="Break" />
+        </Grid>
+    </Viewbox>
 </UserControl>
