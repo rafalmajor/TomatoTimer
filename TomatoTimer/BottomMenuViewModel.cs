@@ -12,13 +12,44 @@ namespace TomatoTimer
 
         private ICommand stopCommand;
 
-        private ICommand breakCommand;
+        private ICommand setBreakCommand;
 
+        private ICommand setTomatoCommand;
 
-        public ICommand StartCommand => this.startCommand ??= new DelegateCommand(() => {});
+        private bool isStarted;
 
-        public ICommand StopCommand => this.stopCommand ??= new DelegateCommand(() => {});
+        public ICommand StartCommand => this.startCommand ??= new DelegateCommand(this.Start);
 
-        public ICommand BreakCommand => this.breakCommand ??= new DelegateCommand(() => {});
+        public ICommand StopCommand => this.stopCommand ??= new DelegateCommand(this.Stop);
+
+        public ICommand SetBreakCommand => this.setBreakCommand ??= new DelegateCommand(this.SetBreak);
+
+        public ICommand SetTomatoCommand => this.setTomatoCommand ??= new DelegateCommand(this.SetTomato);
+
+        public bool IsStarted
+        {
+            get => this.isStarted;
+            set => this.SetProperty(ref this.isStarted, value);
+        }
+
+        private void Start()
+        {
+            this.IsStarted = true;
+        }
+
+        private void Stop()
+        {
+            this.IsStarted = false;
+        }
+
+        private void SetTomato()
+        {
+
+        }
+
+        private void SetBreak()
+        {
+
+        }
     }
 }

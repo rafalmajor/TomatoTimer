@@ -5,8 +5,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:TomatoTimer"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mvvm="http://prismlibrary.com/"
+    d:DataContext="{d:DesignInstance local:ClockViewModel}"
     d:DesignHeight="200"
     d:DesignWidth="500"
+    mvvm:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
     <Viewbox
         HorizontalAlignment="Stretch"
@@ -16,7 +19,7 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             FontWeight="SemiBold"
-            Text="00:00"
+            Text="{Binding CurrentTime}"
             TextAlignment="Center" />
     </Viewbox>
 </UserControl>

@@ -18,9 +18,5 @@ namespace TomatoTimer
     /// </summary>
     public partial class ClockView : UserControl
     {
-        public ClockView()
-        {
-            InitializeComponent();
-        }
     }
 }

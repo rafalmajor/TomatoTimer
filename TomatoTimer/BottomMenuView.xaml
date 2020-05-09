@@ -12,6 +12,7 @@
     mvvm:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
     <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         <Style TargetType="Button">
             <Setter Property="Width" Value="150" />
             <Setter Property="Height" Value="50" />
@@ -32,15 +33,20 @@
             </Grid.ColumnDefinitions>
             <Button
                 Grid.Column="0"
+                Command="{Binding SetTomatoCommand}"
+                Content="Tomato" />
+            <Button
+                Grid.Column="1"
                 Command="{Binding StartCommand}"
                 Content="Start" />
             <Button
                 Grid.Column="1"
                 Command="{Binding StopCommand}"
-                Content="Stop" />
+                Content="Stop"
+                Visibility="{Binding IsStarted, Converter={StaticResource BoolToVisibilityConverter}}"  />
             <Button
                 Grid.Column="2"
-                Command="{Binding BreakCommand}"
+                Command="{Binding SetBreakCommand}"
                 Content="Break" />
         </Grid>
     </Viewbox>
