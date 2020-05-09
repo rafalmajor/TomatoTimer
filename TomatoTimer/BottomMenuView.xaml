@@ -43,7 +43,7 @@
                 Grid.Column="1"
                 Command="{Binding StopCommand}"
                 Content="Stop"
-                Visibility="{Binding IsStarted, Converter={StaticResource BoolToVisibilityConverter}}"  />
+                Visibility="{Binding IsStarted, Converter={StaticResource BoolToVisibilityConverter}}" />
             <Button
                 Grid.Column="2"
                 Command="{Binding SetBreakCommand}"

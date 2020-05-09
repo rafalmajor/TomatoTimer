@@ -22,7 +22,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="2*" />
         </Grid.RowDefinitions>
-        <local:ClockView Grid.Row="1" />
-        <local:BottomMenuView Grid.Row="3" />
+        <local:ClockView x:Name="ClockView" Grid.Row="1" />
+        <local:BottomMenuView x:Name="BottomMenuView" Grid.Row="3" />
     </Grid>
 </Window>
