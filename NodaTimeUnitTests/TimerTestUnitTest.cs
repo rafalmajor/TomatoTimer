@@ -5,9 +5,9 @@ using System.Timers;
 
 namespace NodaTimeUnitTests
 {
-    public class UnitTest1
+    public class TimerTestUnitTest
     {
-        private const int V = 5;
+        private const int max = 5;
 
         [Fact]
         public void TimerTest()
@@ -19,18 +19,18 @@ namespace NodaTimeUnitTests
             {
                 count++;
                 System.Console.WriteLine($"Count={count}");
-                if (count > V)
+                if (count > max)
                 {
                     timer.Stop();
                 }
             };
             timer.Start();
-            while(count < V)
+            while(count < max)
             {
                 System.Threading.Thread.Sleep(100);
             }
 
-            Assert.True(count > V);
+            Assert.True(count > max);
         }
 
         
