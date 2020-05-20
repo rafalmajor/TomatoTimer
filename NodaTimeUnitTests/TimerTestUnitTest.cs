@@ -2,6 +2,7 @@ using System;
 using NodaTime;
 using Xunit;
 using System.Timers;
+using System.Diagnostics;
 
 namespace NodaTimeUnitTests
 {
@@ -18,7 +19,7 @@ namespace NodaTimeUnitTests
             timer.Elapsed += (o, x ) =>
             {
                 count++;
-                System.Console.WriteLine($"Count={count}");
+                Debug.WriteLine($"Count={count}");
                 if (count > max)
                 {
                     timer.Stop();
@@ -30,7 +31,7 @@ namespace NodaTimeUnitTests
                 System.Threading.Thread.Sleep(100);
             }
 
-            Assert.True(count > max);
+            Assert.True(count >= max);
         }
 
         
