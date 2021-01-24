@@ -9,19 +9,33 @@ namespace TomatoTimer
         private const int Interval = 200;
         private Timer timer = new Timer(Interval);
 
+        private LocalDateTime countingBegining;
+
+        public Clock()
+        {
+            this.timer.Elapsed += (o,e) => {this.Refresh(this, EventArgs.Empty);};
+        }
+
         public Instant GetCurrentInstant()
         {
             return SystemClock.Instance.GetCurrentInstant();
         }
 
+        public event EventHandler Refresh;
 
 
-
-        public LocalDateTime Now => this.GetCurrentMomentAsLocalDataTime();
-
-        public Period GetPeriodToNow(LocalDateTime storedDataTime)
+        public string Now
         {
-            return Period.Between(storedDataTime, this.GetCurrentMomentAsLocalDataTime());
+            get
+            { 
+                var x = this.GetPeriodToNow();
+                return $"{x.Minute}:{x.Second}";
+            }
+        }
+
+        private Period GetPeriodToNow()
+        {
+            return Period.Between(this.countingBegining, this.GetCurrentMomentAsLocalDataTime());
         }
 
         private LocalDateTime GetCurrentMomentAsLocalDataTime() => SystemClock.Instance.GetCurrentInstant().InUtc().LocalDateTime;
