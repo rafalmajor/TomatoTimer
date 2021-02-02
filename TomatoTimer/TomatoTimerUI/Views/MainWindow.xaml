@@ -1,10 +1,70 @@
-﻿<Window x:Class="TomatoTimerUI.Views.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:prism="http://prismlibrary.com/"
-        prism:ViewModelLocator.AutoWireViewModel="True"
-        Title="{Binding Title}" Height="350" Width="525" >
+﻿<Window
+    x:Class="TomatoTimerUI.Views.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:prism="http://prismlibrary.com/"
+    Title="Tomato Timer"
+    Width="525"
+    Height="350"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    Icon="/Resources/tomato.ico">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <Style TargetType="Button">
+            <Setter Property="Width" Value="150" />
+            <Setter Property="Height" Value="50" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Margin" Value="10" />
+        </Style>
+    </Window.Resources>
     <Grid>
-        <ContentControl prism:RegionManager.RegionName="ContentRegion" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <!--<ContentControl prism:RegionManager.RegionName="ContentRegion" />-->
+        <Viewbox
+            Grid.Row="0"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Stretch="Uniform">
+            <TextBlock
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontWeight="SemiBold"
+                Text="{Binding CurrentTime}"
+                TextAlignment="Center" />
+        </Viewbox>
+        <Viewbox
+            Grid.Row="1"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Stretch="Uniform">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Button
+                    Grid.Column="0"
+                    Command="{Binding SetTomatoCommand}"
+                    Content="Tomato" />
+                <Button
+                    Grid.Column="1"
+                    Command="{Binding StartCommand}"
+                    Content="Start" />
+                <Button
+                    Grid.Column="1"
+                    Command="{Binding StopCommand}"
+                    Content="Stop"
+                    Visibility="{Binding IsStarted, Converter={StaticResource BoolToVisibilityConverter}}" />
+                <Button
+                    Grid.Column="2"
+                    Command="{Binding SetBreakCommand}"
+                    Content="Break" />
+            </Grid>
+        </Viewbox>
     </Grid>
 </Window>
