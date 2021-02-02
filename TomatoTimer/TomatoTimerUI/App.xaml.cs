@@ -1,22 +1,19 @@
-﻿using Prism.Ioc;
-using System.Windows;
+﻿using System.Windows;
+using Prism.Ioc;
 using TomatoTimerUI.Views;
 
 namespace TomatoTimerUI
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
+    /// <summary>Interaction logic for App.xaml</summary>
     public partial class App
     {
         protected override Window CreateShell()
         {
-            return Container.Resolve<MainWindow>();
+            return this.Container.Resolve<MainWindow>();
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-
         }
     }
 }

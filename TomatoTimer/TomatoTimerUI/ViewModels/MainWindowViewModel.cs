@@ -4,20 +4,17 @@ using Prism.Mvvm;
 
 namespace TomatoTimerUI.ViewModels
 {
+    /// <summary>The Main Window ViewModel.</summary>
+    /// <seealso cref="Prism.Mvvm.BindableBase" />
     public class MainWindowViewModel : BindableBase
     {
-        private string currentTime = "00:00";
         private bool isStarted;
         private ICommand setBreakCommand;
         private ICommand setTomatoCommand;
         private ICommand startCommand;
         private ICommand stopCommand;
 
-        public string CurrentTime
-        {
-            get => this.currentTime;
-            set => this.SetProperty(ref this.currentTime, value);
-        }
+        public TimerViewModel Timer => new TimerViewModel();
 
         public bool IsStarted
         {
@@ -25,9 +22,17 @@ namespace TomatoTimerUI.ViewModels
             set => this.SetProperty(ref this.isStarted, value);
         }
 
-        public ICommand StartCommand => this.startCommand ??= new ActionCommand(() => { this.IsStarted = true; });
+        public ICommand StartCommand => this.startCommand ??= new ActionCommand(() =>
+        {
+            this.IsStarted = true;
+            this.Timer.Start();
+        });
 
-        public ICommand StopCommand => this.stopCommand ??= new ActionCommand(() => { this.IsStarted = false; });
+        public ICommand StopCommand => this.stopCommand ??= new ActionCommand(() =>
+        {
+            this.IsStarted = false;
+            this.Timer.Stop();
+        });
 
         public ICommand SetTomatoCommand => this.setTomatoCommand ??= new ActionCommand(() => { });
 
