@@ -24,11 +24,8 @@ namespace TomatoTimerUI.ViewModels
         {
             get
             {
-                if (this.Period == Period.Zero)
-                {
-                    return this.startPeriod == Period.Zero ? 0 : 1;
-                }
-                
+                if (this.Period == Period.Zero) return this.startPeriod == Period.Zero ? 0 : 1;
+
                 double startAllSeconds = this.startPeriod.Minutes * 60 + this.startPeriod.Seconds;
                 double periodAllSeconds = this.period.Minutes * 60 + this.period.Seconds;
                 return Convert.ToDouble(startAllSeconds - periodAllSeconds) / startAllSeconds;
@@ -76,7 +73,11 @@ namespace TomatoTimerUI.ViewModels
             {
                 this.timer.Stop();
                 this.Period = Period.Zero;
+
+                if (this.startPeriod == Period.Zero) return;
+                this.IsOn = false;
                 this.End?.Invoke(this, EventArgs.Empty);
+
             }
         }
 
