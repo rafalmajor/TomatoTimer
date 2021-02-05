@@ -37,7 +37,7 @@ namespace TomatoTimerUI.ViewModels
 
             this.Timer.End += (o, a) =>
             {
-                this.currentSoundPlayer.Play();
+                this.currentSoundPlayer?.Play();
                 Task.Run(() =>
                 {
                     foreach (int current in Enumerable.Range(0, 10))
@@ -47,6 +47,8 @@ namespace TomatoTimerUI.ViewModels
                         this.TaskbarItemProgressState = TaskbarItemProgressState.Normal;
                         Thread.Sleep(200);
                     }
+
+                    this.Timer.SetTime(0);
                 });
             };
         }
