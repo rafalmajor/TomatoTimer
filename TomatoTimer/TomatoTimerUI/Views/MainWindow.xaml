@@ -15,12 +15,30 @@
     mc:Ignorable="d">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-        <Style TargetType="Button">
+        <Style x:Key="ButtonStyle" TargetType="Button">
             <Setter Property="Width" Value="150" />
             <Setter Property="Height" Value="50" />
             <Setter Property="FontSize" Value="20" />
             <Setter Property="FontWeight" Value="SemiBold" />
             <Setter Property="Margin" Value="10" />
+        </Style>
+        <Style x:Key="TomatoButtonStyle" TargetType="Button" BasedOn="{StaticResource ButtonStyle}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsTomataOnGoing}" Value="True">
+                    <Setter Property="Background" Value="Red" />
+                    <Setter Property="FontWeight" Value="Bold" />
+                    <Setter Property="FontSize" Value="25" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="BrakeButtonStyle" TargetType="Button" BasedOn="{StaticResource ButtonStyle}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsBreakOnGoing}" Value="True">
+                    <Setter Property="Background" Value="Red" />
+                    <Setter Property="FontWeight" Value="Bold" />
+                    <Setter Property="FontSize" Value="25" />
+                </DataTrigger>
+            </Style.Triggers>
         </Style>
     </Window.Resources>
     <Window.TaskbarItemInfo>
@@ -58,20 +76,24 @@
                 <Button
                     Grid.Column="0"
                     Command="{Binding SetTomatoCommand}"
-                    Content="Tomato" />
+                    Content="Tomato" 
+                    Style="{StaticResource TomatoButtonStyle}" />
                 <Button
                     Grid.Column="1"
                     Command="{Binding StartCommand}"
-                    Content="Start" />
+                    Content="Start"
+                    Style="{StaticResource ButtonStyle}" />
                 <Button
                     Grid.Column="1"
                     Command="{Binding StopCommand}"
                     Content="Stop"
-                    Visibility="{Binding Timer.IsOn, Converter={StaticResource BoolToVisibilityConverter}}" />
+                    Visibility="{Binding Timer.IsOn, Converter={StaticResource BoolToVisibilityConverter}}" 
+                    Style="{StaticResource ButtonStyle}" />
                 <Button
                     Grid.Column="2"
                     Command="{Binding SetBreakCommand}"
-                    Content="Break" />
+                    Content="Break" 
+                    Style="{StaticResource BrakeButtonStyle}"/>
             </Grid>
         </Viewbox>
     </Grid>
