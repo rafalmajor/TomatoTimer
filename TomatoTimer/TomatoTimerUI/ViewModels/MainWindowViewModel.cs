@@ -13,8 +13,8 @@ namespace TomatoTimerUI.ViewModels
     /// <seealso cref="Prism.Mvvm.BindableBase" />
     public class MainWindowViewModel : BindableBase
     {
-        private const int Tomato = 2;
-        private const int Break = 1;
+        private const int Tomato = 25;
+        private const int Break = 5;
         private readonly SoundPlayer soundPlayerAlarm = new SoundPlayer(@"Resources/Various-04.wav");
 
         private readonly SoundPlayer soundPlayerBravo = new SoundPlayer(@"Resources/Various-01.wav");
