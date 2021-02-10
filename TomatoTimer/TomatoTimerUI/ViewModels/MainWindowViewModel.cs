@@ -21,6 +21,10 @@ namespace TomatoTimerUI.ViewModels
 
         private SoundPlayer currentSoundPlayer;
 
+        private bool isBreakOnGoing;
+
+        private bool isTomatoOnGoing;
+
         private ICommand setBreakCommand;
 
         private ICommand setTomatoCommand;
@@ -31,17 +35,13 @@ namespace TomatoTimerUI.ViewModels
 
         private TaskbarItemProgressState taskbarItemProgressState;
 
-        private bool isTomataOnGoing;
-
-        private bool isBreakOnGoing;
-
         public MainWindowViewModel()
         {
             this.TaskbarItemProgressState = TaskbarItemProgressState.Normal;
 
             this.Timer.End += (o, a) =>
             {
-                this.IsTomataOnGoing = false;
+                this.IsTomatoOnGoing = false;
                 this.IsBreakOnGoing = true;
                 this.currentSoundPlayer.Play();
                 Task.Run(() =>
@@ -67,16 +67,16 @@ namespace TomatoTimerUI.ViewModels
             set => this.SetProperty(ref this.taskbarItemProgressState, value);
         }
 
-        public bool IsTomataOnGoing 
-        { 
-            get => this.isTomataOnGoing; 
-            set => this.SetProperty(ref this.isTomataOnGoing, value); 
+        public bool IsTomatoOnGoing
+        {
+            get => this.isTomatoOnGoing;
+            set => this.SetProperty(ref this.isTomatoOnGoing, value);
         }
-        
-        public bool IsBreakOnGoing 
-        { 
-            get => this.isBreakOnGoing; 
-            set => this.SetProperty(ref this.isBreakOnGoing, value); 
+
+        public bool IsBreakOnGoing
+        {
+            get => this.isBreakOnGoing;
+            set => this.SetProperty(ref this.isBreakOnGoing, value);
         }
 
         public ICommand StartCommand => this.startCommand ??= new ActionCommand(this.Timer.Start);
@@ -86,7 +86,7 @@ namespace TomatoTimerUI.ViewModels
         public ICommand SetTomatoCommand => this.setTomatoCommand ??= new ActionCommand(() =>
         {
             this.currentSoundPlayer = this.soundPlayerAlarm;
-            this.IsTomataOnGoing = true;
+            this.IsTomatoOnGoing = true;
             this.IsBreakOnGoing = false;
             this.Timer.SetTime(Tomato);
             this.Timer.Start();
@@ -96,7 +96,7 @@ namespace TomatoTimerUI.ViewModels
         {
             this.currentSoundPlayer = this.soundPlayerBravo;
             this.IsBreakOnGoing = true;
-            this.IsTomataOnGoing = false;
+            this.IsTomatoOnGoing = false;
             this.Timer.SetTime(Break);
             this.Timer.Start();
         });
