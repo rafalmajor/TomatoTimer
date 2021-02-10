@@ -85,7 +85,7 @@ namespace TomatoTimerUI.ViewModels
 
         public ICommand SetTomatoCommand => this.setTomatoCommand ??= new ActionCommand(() =>
         {
-            this.currentSoundPlayer = this.soundPlayerAlarm;
+            this.currentSoundPlayer = this.soundPlayerBravo;
             this.IsTomatoOnGoing = true;
             this.IsBreakOnGoing = false;
             this.Timer.SetTime(Tomato);
@@ -94,7 +94,7 @@ namespace TomatoTimerUI.ViewModels
 
         public ICommand SetBreakCommand => this.setBreakCommand ??= new ActionCommand(() =>
         {
-            this.currentSoundPlayer = this.soundPlayerBravo;
+            this.currentSoundPlayer = this.soundPlayerAlarm;
             this.IsBreakOnGoing = true;
             this.IsTomatoOnGoing = false;
             this.Timer.SetTime(Break);
