@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Timers;
 using NodaTime;
+using Prism.Events;
 using Prism.Mvvm;
 
 namespace TomatoTimerUI.ViewModels
@@ -12,9 +13,11 @@ namespace TomatoTimerUI.ViewModels
         private bool isOn;
         private Period period = Period.Zero;
         private Period startPeriod = Period.Zero;
+        private readonly IEventAggregator eventAggregator;
 
-        public TimerViewModel()
+        public TimerViewModel(IEventAggregator eventAggregator)
         {
+            this.eventAggregator = eventAggregator;
             this.timer.Elapsed += this.TimerOnElapsed;
         }
 
@@ -48,9 +51,6 @@ namespace TomatoTimerUI.ViewModels
             get => this.isOn;
             private set => this.SetProperty(ref this.isOn, value);
         }
-
-        public event EventHandler End;
-
         public void Start()
         {
             this.IsOn = true;
@@ -76,8 +76,7 @@ namespace TomatoTimerUI.ViewModels
 
                 if (this.startPeriod == Period.Zero) return;
                 this.IsOn = false;
-                this.End?.Invoke(this, EventArgs.Empty);
-
+                this.eventAggregator.GetEvent<Events.TimeUpEvent>().Publish();
             }
         }
 

@@ -11,10 +11,6 @@ namespace TomatoTimerUI.Views
         public MainWindow()
         {
             this.InitializeComponent();
-            //if (this.DataContext is MainWindowViewModel mainWindowViewModel)
-            //{
-            //    mainWindowViewModel.TaskbarItemInfo = this.TaskbarItemInfo;
-            //}
         }
     }
 }

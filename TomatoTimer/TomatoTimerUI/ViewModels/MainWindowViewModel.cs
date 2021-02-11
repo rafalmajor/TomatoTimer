@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Shell;
 using Microsoft.Xaml.Behaviors.Core;
+using Prism.Events;
 using Prism.Mvvm;
+using TomatoTimerUI.Events;
 
 namespace TomatoTimerUI.ViewModels
 {
@@ -13,8 +15,8 @@ namespace TomatoTimerUI.ViewModels
     /// <seealso cref="Prism.Mvvm.BindableBase" />
     public class MainWindowViewModel : BindableBase
     {
-        private const int Tomato = 25;
-        private const int Break = 5;
+        private const int Tomato = 2;
+        private const int Break = 1;
         private readonly SoundPlayer soundPlayerAlarm = new SoundPlayer(@"Resources/Various-04.wav");
 
         private readonly SoundPlayer soundPlayerBravo = new SoundPlayer(@"Resources/Various-01.wav");
@@ -35,14 +37,19 @@ namespace TomatoTimerUI.ViewModels
 
         private TaskbarItemProgressState taskbarItemProgressState;
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(IEventAggregator eventAggregator)
         {
+            this.eventAggregator = eventAggregator;
             this.TaskbarItemProgressState = TaskbarItemProgressState.Normal;
+            this.Timer = new TimerViewModel(eventAggregator);
 
-            this.Timer.End += (o, a) =>
-            {
+            this.eventAggregator.GetEvent<TimeUpEvent>().Subscribe(this.TimeUp);
+        }
+
+        private void TimeUp()
+        {
                 this.IsTomatoOnGoing = false;
-                this.IsBreakOnGoing = true;
+                this.IsBreakOnGoing = false;
                 this.currentSoundPlayer.Play();
                 Task.Run(() =>
                 {
@@ -56,10 +63,11 @@ namespace TomatoTimerUI.ViewModels
 
                     this.Timer.SetTime(0);
                 });
-            };
         }
 
-        public TimerViewModel Timer { get; } = new TimerViewModel();
+        public TimerViewModel Timer { get; private set;}
+
+        private readonly IEventAggregator eventAggregator;
 
         public TaskbarItemProgressState TaskbarItemProgressState
         {
