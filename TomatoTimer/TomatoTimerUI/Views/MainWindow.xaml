@@ -52,12 +52,15 @@
     </Window.TaskbarItemInfo>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="20" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <!--<ContentControl prism:RegionManager.RegionName="ContentRegion" />-->
+        <ListView x:Name="itemListView"
+          ItemsSource="{Binding Tomatos}">          
+        </ListView>
         <Viewbox
-            Grid.Row="0"
+            Grid.Row="1"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Stretch="Uniform">
@@ -69,7 +72,7 @@
                 TextAlignment="Center" />
         </Viewbox>
         <Viewbox
-            Grid.Row="1"
+            Grid.Row="2"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Stretch="Uniform">

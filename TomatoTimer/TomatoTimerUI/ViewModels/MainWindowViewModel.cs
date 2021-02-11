@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Media;
 using System.Threading;
 using System.Threading.Tasks;
@@ -48,21 +50,33 @@ namespace TomatoTimerUI.ViewModels
 
         private void TimeUp()
         {
-                this.IsTomatoOnGoing = false;
-                this.IsBreakOnGoing = false;
-                this.currentSoundPlayer.Play();
-                Task.Run(() =>
-                {
-                    foreach (int current in Enumerable.Range(0, 10))
-                    {
-                        this.TaskbarItemProgressState = TaskbarItemProgressState.Error;
-                        Thread.Sleep(200);
-                        this.TaskbarItemProgressState = TaskbarItemProgressState.Normal;
-                        Thread.Sleep(200);
-                    }
+            this.AddTomatoIfDone();
 
-                    this.Timer.SetTime(0);
-                });
+            this.IsTomatoOnGoing = false;
+            this.IsBreakOnGoing = false;
+            this.currentSoundPlayer.Play();
+            Task.Run(() =>
+            {
+                foreach (int current in Enumerable.Range(0, 10))
+                {
+                    this.TaskbarItemProgressState = TaskbarItemProgressState.Error;
+                    Thread.Sleep(200);
+                    this.TaskbarItemProgressState = TaskbarItemProgressState.Normal;
+                    Thread.Sleep(200);
+                }
+
+                this.Timer.SetTime(0);
+            });
+        }
+
+        private void AddTomatoIfDone()
+        {
+            if (!this.IsTomatoOnGoing)
+            {
+                return;
+            }
+
+            this.Tomatos.Add(new TomatoViewModel());
         }
 
         public TimerViewModel Timer { get; private set;}
@@ -86,6 +100,8 @@ namespace TomatoTimerUI.ViewModels
             get => this.isBreakOnGoing;
             set => this.SetProperty(ref this.isBreakOnGoing, value);
         }
+
+        public ObservableCollection<TomatoViewModel> Tomatos = new ObservableCollection<TomatoViewModel>();
 
         public ICommand StartCommand => this.startCommand ??= new ActionCommand(this.Timer.Start);
 
