@@ -42,7 +42,7 @@ namespace TomatoTimerUI.ViewModels
 
         private TaskbarItemProgressState taskbarItemProgressState;
 
-        public ObservableCollection<TomatoViewModel> Tomatos = new ObservableCollection<TomatoViewModel>();
+        public ObservableCollection<TomatoViewModel> Tomatos = new ObservableCollection<TomatoViewModel>(){new TomatoViewModel(), new TomatoViewModel(), new TomatoViewModel()};
 
         public MainWindowViewModel(IEventAggregator eventAggregator)
         {

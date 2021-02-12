@@ -31,6 +31,7 @@
                     <Setter Property="Background" Value="Red" />
                     <Setter Property="FontWeight" Value="Bold" />
                     <Setter Property="FontSize" Value="25" />
+                    <Setter Property="BorderThickness" Value="5" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -43,6 +44,7 @@
                     <Setter Property="Background" Value="Red" />
                     <Setter Property="FontWeight" Value="Bold" />
                     <Setter Property="FontSize" Value="25" />
+                    <Setter Property="BorderThickness" Value="5" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -52,13 +54,20 @@
     </Window.TaskbarItemInfo>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="20" />
+            <RowDefinition Height="0" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <ListView x:Name="itemListView"
-          ItemsSource="{Binding Tomatos}">          
-        </ListView>
+        <ListBox
+            x:Name="itemListView"
+            Grid.Row="0"
+            ItemsSource="{Binding Tomatos}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Button>Test</Button>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
         <Viewbox
             Grid.Row="1"
             HorizontalAlignment="Stretch"
