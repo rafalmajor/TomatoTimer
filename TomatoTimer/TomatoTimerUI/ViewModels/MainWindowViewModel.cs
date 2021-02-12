@@ -42,20 +42,9 @@ namespace TomatoTimerUI.ViewModels
             this.Timer.End += (o, a) =>
             {
                 this.IsTomatoOnGoing = false;
-                this.IsBreakOnGoing = true;
+                this.IsBreakOnGoing = false;
                 this.currentSoundPlayer.Play();
-                Task.Run(() =>
-                {
-                    foreach (int current in Enumerable.Range(0, 10))
-                    {
-                        this.TaskbarItemProgressState = TaskbarItemProgressState.Error;
-                        Thread.Sleep(200);
-                        this.TaskbarItemProgressState = TaskbarItemProgressState.Normal;
-                        Thread.Sleep(200);
-                    }
-
-                    this.Timer.SetTime(0);
-                });
+                Task.Run(this.BlinkTaskbarProgressAndZeroTimer);
             };
         }
 
@@ -100,5 +89,18 @@ namespace TomatoTimerUI.ViewModels
             this.Timer.SetTime(Break);
             this.Timer.Start();
         });
+
+        private void BlinkTaskbarProgressAndZeroTimer()
+        {
+            foreach (int current in Enumerable.Range(0, 10))
+            {
+                this.TaskbarItemProgressState = TaskbarItemProgressState.Error;
+                Thread.Sleep(200);
+                this.TaskbarItemProgressState = TaskbarItemProgressState.Normal;
+                Thread.Sleep(200);
+            }
+
+            this.Timer.SetTime(0);
+        }
     }
 }
