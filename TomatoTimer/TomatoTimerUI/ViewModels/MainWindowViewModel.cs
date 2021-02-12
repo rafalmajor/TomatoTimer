@@ -1,11 +1,14 @@
-﻿using System.Linq;
+﻿using System.Collections.ObjectModel;
+using System.Linq;
 using System.Media;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Shell;
 using Microsoft.Xaml.Behaviors.Core;
+using Prism.Events;
 using Prism.Mvvm;
+using TomatoTimerUI.Events;
 
 namespace TomatoTimerUI.ViewModels
 {
@@ -13,8 +16,12 @@ namespace TomatoTimerUI.ViewModels
     /// <seealso cref="Prism.Mvvm.BindableBase" />
     public class MainWindowViewModel : BindableBase
     {
-        private const int Tomato = 25;
-        private const int Break = 5;
+        private const int Tomato = 2;
+
+        private const int Break = 1;
+
+        private readonly IEventAggregator eventAggregator;
+
         private readonly SoundPlayer soundPlayerAlarm = new SoundPlayer(@"Resources/Various-04.wav");
 
         private readonly SoundPlayer soundPlayerBravo = new SoundPlayer(@"Resources/Various-01.wav");
@@ -35,20 +42,18 @@ namespace TomatoTimerUI.ViewModels
 
         private TaskbarItemProgressState taskbarItemProgressState;
 
-        public MainWindowViewModel()
-        {
-            this.TaskbarItemProgressState = TaskbarItemProgressState.Normal;
+        public ObservableCollection<TomatoViewModel> Tomatos = new ObservableCollection<TomatoViewModel>();
 
-            this.Timer.End += (o, a) =>
-            {
-                this.IsTomatoOnGoing = false;
-                this.IsBreakOnGoing = false;
-                this.currentSoundPlayer.Play();
-                Task.Run(this.BlinkTaskbarProgressAndZeroTimer);
-            };
+        public MainWindowViewModel(IEventAggregator eventAggregator)
+        {
+            this.eventAggregator = eventAggregator;
+            this.TaskbarItemProgressState = TaskbarItemProgressState.Normal;
+            this.Timer = new TimerViewModel(eventAggregator);
+
+            this.eventAggregator.GetEvent<TimeUpEvent>().Subscribe(this.TimeUp);
         }
 
-        public TimerViewModel Timer { get; } = new TimerViewModel();
+        public TimerViewModel Timer { get; }
 
         public TaskbarItemProgressState TaskbarItemProgressState
         {
@@ -89,6 +94,23 @@ namespace TomatoTimerUI.ViewModels
             this.Timer.SetTime(Break);
             this.Timer.Start();
         });
+
+        private void TimeUp()
+        {
+            this.AddTomatoIfDone();
+
+            this.IsTomatoOnGoing = false;
+            this.IsBreakOnGoing = false;
+            this.currentSoundPlayer.Play();
+            Task.Run(this.BlinkTaskbarProgressAndZeroTimer);
+        }
+
+        private void AddTomatoIfDone()
+        {
+            if (!this.IsTomatoOnGoing) return;
+
+            this.Tomatos.Add(new TomatoViewModel());
+        }
 
         private void BlinkTaskbarProgressAndZeroTimer()
         {
